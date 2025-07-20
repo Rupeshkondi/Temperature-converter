@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temperature Converter</title>
+    
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Custom styles to apply the Inter font */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Style for the input number spinners (arrows) */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+          -webkit-appearance: none; 
+          margin: 0; 
+        }
+        input[type=number] {
+          -moz-appearance: textfield;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 min-h-screen flex items-center justify-center p-4">
+
+    <!-- Main Converter Card -->
+    <div id="converter-card" class="w-full max-w-md bg-white/70 backdrop-blur-xl shadow-2xl shadow-blue-500/10 rounded-2xl p-6 md:p-8 transform transition-all duration-500 hover:scale-105">
+
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-800">Temperature Converter</h1>
+            <p class="text-gray-500 mt-2">Convert between Celsius, Fahrenheit, and Kelvin in real-time.</p>
+        </div>
+
+        <!-- Input Fields -->
+        <div class="space-y-6">
+            
+            <!-- Celsius Input -->
+            <div>
+                <label for="celsius" class="block text-lg font-semibold text-gray-700 mb-2">Celsius (°C)</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-xl text-blue-500">
+                        🌡️
+                    </div>
+                    <input type="number" id="celsius" placeholder="e.g., 25" class="w-full pl-12 pr-4 py-3 text-lg text-gray-700 bg-white border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-blue-300 focus:border-blue-500 transition-all duration-300 outline-none">
+                </div>
+            </div>
+
+            <!-- Fahrenheit Input -->
+            <div>
+                <label for="fahrenheit" class="block text-lg font-semibold text-gray-700 mb-2">Fahrenheit (°F)</label>
+                 <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-xl text-green-500">
+                        🌡️
+                    </div>
+                    <input type="number" id="fahrenheit" placeholder="e.g., 77" class="w-full pl-12 pr-4 py-3 text-lg text-gray-700 bg-white border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-green-300 focus:border-green-500 transition-all duration-300 outline-none">
+                </div>
+            </div>
+
+            <!-- Kelvin Input -->
+            <div>
+                <label for="kelvin" class="block text-lg font-semibold text-gray-700 mb-2">Kelvin (K)</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-xl text-purple-500">
+                        🌡️
+                    </div>
+                    <input type="number" id="kelvin" placeholder="e.g., 298.15" class="w-full pl-12 pr-4 py-3 text-lg text-gray-700 bg-white border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-purple-300 focus:border-purple-500 transition-all duration-300 outline-none">
+                </div>
+            </div>
+            
+        </div>
+
+        <!-- Reset Button -->
+        <div class="mt-8">
+            <button id="reset-button" class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-4 rounded-xl text-lg transition-all duration-300 transform hover:-translate-y-1 shadow-lg hover:shadow-xl">
+                Reset
+            </button>
+        </div>
+        
+    </div>
+
+    <script>
+        // --- Element Selection ---
+        const celsiusInput = document.getElementById('celsius');
+        const fahrenheitInput = document.getElementById('fahrenheit');
+        const kelvinInput = document.getElementById('kelvin');
+        const resetButton = document.getElementById('reset-button');
+        const card = document.getElementById('converter-card');
+
+        // --- Conversion Logic ---
+
+        /**
+         * Converts a value from one unit to others and updates the input fields.
+         * @param {string} fromUnit - The unit to convert from ('celsius', 'fahrenheit', 'kelvin').
+         * @param {number} value - The numeric value to convert.
+         */
+        function convert(fromUnit, value) {
+            // If input is not a number (e.g., empty), clear all fields.
+            if (isNaN(value)) {
+                celsiusInput.value = '';
+                fahrenheitInput.value = '';
+                kelvinInput.value = '';
+                return;
+            }
+
+            switch (fromUnit) {
+                case 'celsius':
+                    // Celsius to Fahrenheit and Kelvin
+                    const c = value;
+                    const fFromC = (c * 9/5) + 32;
+                    const kFromC = c + 273.15;
+                    fahrenheitInput.value = fFromC.toFixed(2);
+                    kelvinInput.value = kFromC.toFixed(2);
+                    break;
+
+                case 'fahrenheit':
+                    // Fahrenheit to Celsius and Kelvin
+                    const f = value;
+                    const cFromF = (f - 32) * 5/9;
+                    const kFromF = cFromF + 273.15;
+                    celsiusInput.value = cFromF.toFixed(2);
+                    kelvinInput.value = kFromF.toFixed(2);
+                    break;
+
+                case 'kelvin':
+                    // Kelvin to Celsius and Fahrenheit
+                    const k = value;
+                    const cFromK = k - 273.15;
+                    const fFromK = (cFromK * 9/5) + 32;
+                    celsiusInput.value = cFromK.toFixed(2);
+                    fahrenheitInput.value = fFromK.toFixed(2);
+                    break;
+            }
+        }
+
+        // --- Event Listeners ---
+
+        // Listen for input on the Celsius field
+        celsiusInput.addEventListener('input', () => {
+            convert('celsius', parseFloat(celsiusInput.value));
+        });
+
+        // Listen for input on the Fahrenheit field
+        fahrenheitInput.addEventListener('input', () => {
+            convert('fahrenheit', parseFloat(fahrenheitInput.value));
+        });
+
+        // Listen for input on the Kelvin field
+        kelvinInput.addEventListener('input', () => {
+            convert('kelvin', parseFloat(kelvinInput.value));
+        });
+        
+        // Listen for click on the Reset button
+        resetButton.addEventListener('click', () => {
+            celsiusInput.value = '';
+            fahrenheitInput.value = '';
+            kelvinInput.value = '';
+            
+            // Fun little animation on reset
+            card.classList.add('transform', 'rotate-3', 'scale-95');
+            setTimeout(() => {
+                card.classList.remove('transform', 'rotate-3', 'scale-95');
+            }, 300);
+        });
+
+    </script>
+</body>
+</html>
