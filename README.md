@@ -29,7 +29,7 @@ A clean and user-friendly web app that converts temperatures between **Celsius**
 
 ## 📷 Screenshot
 
-![Temperature Converter Screenshot](screenshot.png) <!-- Add this image to your repo -->
+![Temperature Converter Screenshot](https://github.com/Rupeshkondi/Temperature-converter/blob/main/Screenshot%202025-07-20%20155645.png) 
 
 ---
 
